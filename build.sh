@@ -15,10 +15,10 @@ Linux)
        -e _start \
        --gc-sections \
        -dynamic-linker /lib64/ld-linux-x86-64.so.2 \
-       -L/lib/x86_64-linux-gnu \
        hello.o \
        target/x86_64-unknown-linux-gnu/release/libfrom_rust.a \
-       -lc -lpthread -ldl -lgcc_s -lm \
+       /lib/x86_64-linux-gnu/libgcc_s.so.1 \
+       -lc -lpthread -ldl -lm \
        -o hello
 
     echo "==> Built ./hello"
