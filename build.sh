@@ -22,7 +22,7 @@ Linux)
        -o hello
 
     echo "==> Built ./hello"
-    echo "==> Run: qemu-x86_64 ./hello"
+    echo "==> Run with ./hello"
     ;;
 
 Darwin)
@@ -43,7 +43,7 @@ Darwin)
        -o hello
 
     echo "==> Built ./hello"
-    echo "==> Run: arch -x86_64 ./hello"
+    echo "==> Run with ./hello"
     ;;
 
 *)
