@@ -37,6 +37,7 @@ Darwin)
        -dead_strip \
        -lSystem \
        -syslibroot $(xcrun --sdk macosx --show-sdk-path) \
+       -macos_version_min 14.0 \
        hello.o \
        target/x86_64-apple-darwin/release/libfrom_rust.a \
        -o hello
