@@ -15,9 +15,10 @@ Linux)
        -e _start \
        --gc-sections \
        -dynamic-linker /lib64/ld-linux-x86-64.so.2 \
+       -L/lib/x86_64-linux-gnu \
        hello.o \
        target/x86_64-unknown-linux-gnu/release/libfrom_rust.a \
-       -lc -lpthread -ldl \
+       -lc -lpthread -ldl -lgcc_s -lm \
        -o hello
 
     echo "==> Built ./hello"
@@ -34,7 +35,6 @@ Darwin)
     ld -arch x86_64 \
        -e _start \
        -dead_strip \
-       -macos_version_min 14.0 \
        -lSystem \
        -syslibroot $(xcrun --sdk macosx --show-sdk-path) \
        hello.o \
