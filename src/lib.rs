@@ -2,8 +2,9 @@ use std::io::{self, Write};
 use std::process;
 
 // On Mach-O, #[no_mangle] `print` exports as `_print` (linker adds the underscore).
-// On ELF, it exports as `print`. NASM calls `_print` on macOS and `print` on Linux —
+// On ELF, it exports as `print`. NASM calls `_print` on macOS and `print` on Linux.
 // but since our NASM uses `call _print` on both, we use must cfg to export the right name.
+// (Note this should not apply to NATIVEjava.io.blah.blah so we should still be able to have those)
 
 #[cfg_attr(target_os = "macos", export_name = "print")]
 #[cfg_attr(target_os = "linux", export_name = "_print")]
