@@ -9,7 +9,7 @@ Linux)
 
     nasm -f elf64 hello.asm -o hello.o
 
-    cargo build --release --target x86_64-unknown-linux-gnu
+    cargo build --target x86_64-unknown-linux-gnu
 
     ld -m elf_x86_64 \
        -e _start \
@@ -30,7 +30,7 @@ Darwin)
 
     nasm -f macho64 hello.asm -o hello.o
 
-    cargo build --release --target x86_64-apple-darwin
+    cargo build --target x86_64-apple-darwin
 
     ld -arch x86_64 \
        -e _start \
