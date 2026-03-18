@@ -1,9 +1,8 @@
 default rel
 
 section .text
+    extern __exception, __debexit, NATIVEjava.io.OutputStream.nativeWrite
     global _start
-    extern __debexit
-    extern NATIVEjava.io.OutputStream.nativeWrite
 
 _start:
     lea  rsi, [msg]         ; need 64-bit lea to get RIP-relative address sadly. will need to keep this
@@ -19,7 +18,7 @@ _start:
     jnz  .loop
 
     mov  eax, 0
-    call __debexit
+    call __exception
 
 section .data
     msg: db "Hello, world!", 0x0A ; \n . no null byte

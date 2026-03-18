@@ -15,7 +15,7 @@ use std::process;
 // We save eax immediately in the naked stub before the compiler
 // can clobber it, then forward to the real implementation.
 #[unsafe(naked)]
-#[export_name = "\x01NATIVEjava.io.OutputStream.nativeWrite"]
+#[unsafe(export_name = "\x01NATIVEjava.io.OutputStream.nativeWrite")]
 pub unsafe extern "C" fn print() {
     core::arch::naked_asm!(
         // eax contains the byte, we move al into edi which is the first SysV arg, (zero-extended)
@@ -32,11 +32,21 @@ extern "sysv64" fn print_inner(byte: u8) {
 }
 
 #[unsafe(naked)]
-#[export_name = "\x01__debexit"]
+#[unsafe(export_name = "\x01__debexit")]
 pub unsafe extern "C" fn exit_with_code() -> ! {
     core::arch::naked_asm!(
         // eax contains the code, we move into edi which is the first SysV arg
         "mov edi, eax",
+        "call {inner}",
+        inner = sym exit_inner,
+    )
+}
+
+#[unsafe(naked)]
+#[unsafe(export_name = "\x01__exception")]
+pub unsafe extern "C" fn exit_with_exception() -> ! {
+    core::arch::naked_asm!(
+        "mov edi, 13",
         "call {inner}",
         inner = sym exit_inner,
     )
