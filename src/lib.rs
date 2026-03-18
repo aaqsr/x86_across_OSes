@@ -8,6 +8,7 @@ use std::process;
 
 #[cfg_attr(target_os = "macos", export_name = "print")]
 #[cfg_attr(target_os = "linux", export_name = "_print")]
+#[cfg_attr(target_os = "windows", export_name = "_print")]
 pub extern "sysv64" fn print(ptr: *const u8, len: usize) {
     let slice = unsafe { std::slice::from_raw_parts(ptr, len) };
     io::stdout().write_all(slice).unwrap();
@@ -15,6 +16,8 @@ pub extern "sysv64" fn print(ptr: *const u8, len: usize) {
 
 #[cfg_attr(target_os = "macos", export_name = "exit_with_code")]
 #[cfg_attr(target_os = "linux", export_name = "_exit_with_code")]
+#[cfg_attr(target_os = "windows", export_name = "_exit_with_code")]
 pub extern "sysv64" fn exit_with_code(code: i32) -> ! {
+    println!("exiting with code: {code}");
     process::exit(code)
 }
