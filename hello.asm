@@ -1,21 +1,25 @@
-; hello.asm — x86_64, identical source for Linux (elf64) and macOS (macho64)
-; System V AMD64 ABI throughout.
-
 default rel
-extern _print, _exit_with_code
-
-section .data
-    msg: db "Hello, world!", 10  ; 14 bytes
 
 section .text
     global _start
+    extern __debexit
+    extern NATIVEjava.io.OutputStream.nativeWrite
 
 _start:
-    ; print(ptr, len) — args in rdi, rsi per SysV AMD64
-    lea  rdi, [msg]
-    mov  rsi, 14
-    call _print
+    lea  rsi, [msg]         ; need 64-bit lea to get RIP-relative address sadly. will need to keep this
+    mov  ebx, 14            ; length of msg we are output
 
-    ; exit_with_code(code) — code in rdi
-    mov  rdi, 0
-    call _exit_with_code
+.loop:
+    movzx eax, byte [rsi]   ; load byte into al/fills the upper unused bits of the destination register with zeros
+    push rsi
+    call NATIVEjava.io.OutputStream.nativeWrite
+    pop  rsi
+    inc  rsi
+    dec  ebx
+    jnz  .loop
+
+    mov  eax, 0
+    call __debexit
+
+section .data
+    msg: db "Hello, world!" 0x0A ; \n . no null byte
